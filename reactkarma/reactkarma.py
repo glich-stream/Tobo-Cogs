@@ -191,6 +191,17 @@ class ReactKarma(getattr(commands, "Cog", object)):
         emoji = reaction.emoji
         upvote = await self._is_upvote(guild, emoji)
         if upvote is not None:
+            message = "{0}({1})".format(user.display_name, user.name)
+
+            if upvote == added:
+                message += " gave a karma to "
+            else:
+                message += " took a karma from "
+            
+            message += "{0}({1})".format(author.display_name, author.name)
+            message += "."
+            
+            await reaction.message.channel.send(message)
             await self._add_karma(author, 1 if upvote == added else -1)
 
     async def _add_karma(self, user: discord.User, amount: int):
