@@ -194,19 +194,19 @@ class ReactKarma(getattr(commands, "Cog", object)):
             await self._add_karma(user, author, 1 if upvote == added else -1, reaction)
 
     async def _add_karma(
-            self, voter: discord.User, recipient: discord.User,
+            self, voter: discord.User, candidate: discord.User,
             amount: int, reaction: discord.Reaction,
     ):
-        settings = self.conf.user(recipient)
+        settings = self.conf.user(candidate)
         karma = await settings.karma()
         await settings.karma.set(karma + amount)
 
         voter_name = "{0}({1})".format(voter.display_name, voter.name)
-        recipient_name = "{0}({1})".format(recipient.display_name, recipient.name)
+        candidate_name = "{0}({1})".format(candidate.display_name, candidate.name)
         action = "gave a karma to" if amount == 1 else "took a karma from"
 
         await reaction.message.channel.send(
-            "{0} {1} {2}.".format(voter_name, action, recipient_name)
+            "{0} {1} {2}.".format(voter_name, action, candidate_name)
         )
 
     async def _get_emoji_id(self, guild: discord.Guild, *, upvote: bool):
